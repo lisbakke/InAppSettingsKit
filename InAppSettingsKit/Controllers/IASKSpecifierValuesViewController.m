@@ -67,7 +67,19 @@
         [_tableView scrollToRowAtIndexPath:_selection.checkedItem
                           atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
     }
+  [self bl_setStyles];
 	[super viewWillAppear:animated];
+}
+
+- (IASKSpecifierValuesViewController *)bl_getMainSettingsVc {
+  UINavigationController *navVc = (UINavigationController *) self.parentViewController;
+  return navVc.viewControllers.firstObject;
+}
+
+- (void)bl_setStyles {
+  self.view.backgroundColor = [UIColor blackColor];
+  self.tableView.separatorColor = [self bl_getMainSettingsVc].tableView.separatorColor;
+  [self.tableView setTintColor:[self bl_getMainSettingsVc].navigationItem.rightBarButtonItem.tintColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -111,12 +123,18 @@
     }
 
     [_selection updateSelectionInCell:cell indexPath:indexPath];
-
+    [self bl_setCellStyles:cell];
     @try {
 		[[cell textLabel] setText:[self.settingsReader titleForStringId:[titles objectAtIndex:indexPath.row]]];
 	}
 	@catch (NSException * e) {}
     return cell;
+}
+
+- (void)bl_setCellStyles:(UITableViewCell *)cell {
+  cell.textLabel.textColor = [UIColor whiteColor];
+  cell.backgroundColor = [UIColor blackColor];
+  cell.detailTextLabel.textColor = [UIColor whiteColor];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
