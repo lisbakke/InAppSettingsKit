@@ -117,6 +117,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell   = [tableView dequeueReusableCellWithIdentifier:kCellValue];
     NSArray *titles         = [_currentSpecifier multipleTitles];
+    NSArray *images         = [_currentSpecifier multipleImages];
 	
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kCellValue];
@@ -126,6 +127,10 @@
     [self bl_setCellStyles:cell];
     @try {
 		[[cell textLabel] setText:[self.settingsReader titleForStringId:[titles objectAtIndex:indexPath.row]]];
+    cell.imageView.image = nil;
+    if (images && images[(NSUInteger) indexPath.row]) {
+      cell.imageView.image = [UIImage imageNamed:images[(NSUInteger) indexPath.row]];
+    }
 	}
 	@catch (NSException * e) {}
     return cell;

@@ -59,6 +59,7 @@
     NSArray *values = [_specifierDict objectForKey:kIASKValues];
     NSArray *titles = [_specifierDict objectForKey:kIASKTitles];
     NSArray *shortTitles = [_specifierDict objectForKey:kIASKShortTitles];
+    NSArray *images = [_specifierDict objectForKey:kIASKCellImage];
     NSMutableDictionary *multipleValuesDict = [NSMutableDictionary new];
     
     if (values) {
@@ -72,6 +73,8 @@
     if (shortTitles) {
 		[multipleValuesDict setObject:shortTitles forKey:kIASKShortTitles];
 	}
+
+  if (images) [multipleValuesDict setObject:images forKey:kIASKCellImage];
     
     [self setMultipleValuesDict:multipleValuesDict];
 }
@@ -242,6 +245,10 @@
 
 - (NSArray*)multipleTitles {
     return [_multipleValuesDict objectForKey:kIASKTitles];
+}
+
+- (NSArray*)multipleImages {
+  return [_multipleValuesDict objectForKey:kIASKCellImage];
 }
 
 - (NSArray*)multipleShortTitles {

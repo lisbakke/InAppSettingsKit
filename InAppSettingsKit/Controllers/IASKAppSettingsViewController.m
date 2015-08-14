@@ -633,10 +633,12 @@ CGRect IASKCGRectSwap(CGRect rect);
 	} else {
 		cell.textLabel.text = specifier.title;
 	}
-    
-	cell.imageView.image = specifier.cellImage;
-	cell.imageView.highlightedImage = specifier.highlightedCellImage;
-    
+
+  if (![specifier.type isEqualToString:kIASKPSMultiValueSpecifier]) {
+    cell.imageView.image = specifier.cellImage;
+    cell.imageView.highlightedImage = specifier.highlightedCellImage;
+  }
+
 	if (![specifier.type isEqualToString:kIASKPSMultiValueSpecifier] && ![specifier.type isEqualToString:kIASKPSTitleValueSpecifier] && ![specifier.type isEqualToString:kIASKPSTextFieldSpecifier]) {
 		cell.textLabel.textAlignment = specifier.textAlignment;
 	}
