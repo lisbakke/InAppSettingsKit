@@ -675,7 +675,7 @@ CGRect IASKCGRectSwap(CGRect rect);
         [targetViewController setCurrentSpecifier:specifier];
         targetViewController.settingsReader = self.settingsReader;
         targetViewController.settingsStore = self.settingsStore;
-		IASK_IF_IOS7_OR_GREATER(targetViewController.view.tintColor = self.view.tintColor;)
+      IASK_IF_IOS7_OR_GREATER(targetViewController.view.tintColor = self.view.tintColor;)
         _currentChildViewController = targetViewController;
         [[self navigationController] pushViewController:targetViewController animated:YES];
         

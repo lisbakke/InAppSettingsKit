@@ -18,6 +18,7 @@
 #import "IASKSpecifier.h"
 #import "IASKSettingsReader.h"
 #import "IASKMultipleValueSelection.h"
+#import "IASKAppSettingsViewController.h"
 
 #define kCellValue      @"kCellValue"
 
@@ -71,13 +72,13 @@
 	[super viewWillAppear:animated];
 }
 
-- (IASKSpecifierValuesViewController *)bl_getMainSettingsVc {
+- (IASKAppSettingsViewController *)bl_getMainSettingsVc {
   UINavigationController *navVc = (UINavigationController *) self.parentViewController;
   return navVc.viewControllers.firstObject;
 }
 
 - (void)bl_setStyles {
-  self.view.backgroundColor = [UIColor blackColor];
+  self.view.backgroundColor = [self bl_getMainSettingsVc].view.backgroundColor;
   self.tableView.separatorColor = [self bl_getMainSettingsVc].tableView.separatorColor;
   [self.tableView setTintColor:[self bl_getMainSettingsVc].navigationItem.rightBarButtonItem.tintColor];
 }
@@ -126,7 +127,7 @@
     [_selection updateSelectionInCell:cell indexPath:indexPath];
     [self bl_setCellStyles:cell];
     @try {
-		[[cell textLabel] setText:[self.settingsReader titleForStringId:[titles objectAtIndex:indexPath.row]]];
+		[[cell textLabel] setText:[self.settingsReader titleForStringId:titles[indexPath.row]]];
     cell.imageView.image = nil;
     if (images && images[(NSUInteger) indexPath.row]) {
       cell.imageView.image = [UIImage imageNamed:images[(NSUInteger) indexPath.row]];
@@ -137,9 +138,16 @@
 }
 
 - (void)bl_setCellStyles:(UITableViewCell *)cell {
-  cell.textLabel.textColor = [UIColor whiteColor];
-  cell.backgroundColor = [UIColor blackColor];
-  cell.detailTextLabel.textColor = [UIColor whiteColor];
+  IASKAppSettingsViewController *vc = [self bl_getMainSettingsVc];
+  UITableViewCell *styleCell = [vc tableView:vc.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0
+                                                                                                   inSection:0]];
+  cell.textLabel.textColor = styleCell.textLabel.textColor;
+  cell.textLabel.font = styleCell.textLabel.font;
+  cell.backgroundColor = styleCell.backgroundColor;
+  cell.detailTextLabel.textColor = styleCell.detailTextLabel.textColor;
+  cell.detailTextLabel.font = styleCell.detailTextLabel.font;
+  cell.selectedBackgroundView = [UIView new];
+  cell.selectedBackgroundView.backgroundColor = styleCell.selectedBackgroundView.backgroundColor;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
